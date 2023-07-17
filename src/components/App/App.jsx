@@ -1,10 +1,10 @@
 // import PropTypes from 'prop-types';
-// import styled from '@emotion/styled';
+
 // api_key=3fd15b48446eede94fd21b39e1e3acac
 
 import { Route, Routes } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
-import Movies from '../pages/Movies';
+import HomePage from '../../pages/HomePage';
+import Movies from '../../pages/Movies';
 import Layout from 'components/Layout/Layout';
 
 export const App = () => {
