@@ -23,16 +23,6 @@ const HomePage = () => {
     }
   };
 
-  // console.log(getMovies());
-
-  // const getMoviesBySearchQuery = async ({ searchQuery }) => {
-  //   try {
-  //     const data = await getMoviesBySearchQuery({ query });
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
   return (
     <>
       <MoviesList movies={movies} />
