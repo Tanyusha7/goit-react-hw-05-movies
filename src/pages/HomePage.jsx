@@ -1,10 +1,11 @@
 import MoviesList from 'components/MoviesList/MoviesList';
 import { getTrendingMovies } from 'Services/Api';
 import { useState, useEffect } from 'react';
+import { Text } from 'components/Text/Text.styled';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
-  // const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getMovies();
@@ -16,15 +17,16 @@ const HomePage = () => {
   const getMovies = async () => {
     try {
       const { results } = await getTrendingMovies();
-      console.log(results);
+
       setMovies(results);
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
     }
   };
 
   return (
     <>
+      {error && <Text>Ups... Something went wrong - {error}!</Text>}
       <MoviesList movies={movies} />
     </>
   );

@@ -1,5 +1,6 @@
 // import { getTrendingMovies } from 'Services/Api';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 // import { useState, useEffect } from 'react';
 import MoviesItem from 'components/MoviesItem/MoviesItem';
 import { List } from './MoviesList.styled';
@@ -10,7 +11,11 @@ const MoviesList = ({ movies }) => {
     <List>
       {movies &&
         movies.map(({ title, id }) => {
-          return <MoviesItem id={id} title={title} />;
+          return (
+            <Link to={`/movies/${id}`}>
+              <MoviesItem id={id} title={title} key={id} />
+            </Link>
+          );
         })}
     </List>
   );
@@ -19,6 +24,10 @@ const MoviesList = ({ movies }) => {
 export default MoviesList;
 
 MoviesList.propTypes = {
-  id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    })
+  ),
 };

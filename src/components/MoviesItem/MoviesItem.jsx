@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
 
 const MoviesItem = ({ id, title }) => {
-  return <li key={id}>{title}</li>;
+  return (
+    <>
+      <li id={id}>{title}</li>
+    </>
+  );
 };
 
 export default MoviesItem;
