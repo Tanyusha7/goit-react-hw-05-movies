@@ -9,23 +9,36 @@ const Reviews = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const movieReviews = async movie_id => {
+      try {
+        if (!movie_id) {
+          return;
+        }
+        const { results } = await getReviewsOfMovie(movie_id);
+        // console.log(results);
+        setMovie(results);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
     movieReviews(movie_id);
   }, [movie_id]);
 
-  const movieReviews = async movie_id => {
-    try {
-      if (!movie) {
-        return;
-      }
-      const { results } = await getReviewsOfMovie(movie_id);
-      console.log(results);
-      setMovie(results);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
+  //   const movieReviews = async movie_id => {
+  //     try {
+  //       if (!movie) {
+  //         return;
+  //       }
+  //       const { results } = await getReviewsOfMovie(movie_id);
+  //       console.log(results);
+  //       setMovie(results);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     }
+  //   };
 
-  console.log(movie);
+  //   console.log(movie);
 
   return (
     <>

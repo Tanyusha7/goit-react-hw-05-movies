@@ -6,6 +6,8 @@ import { Text } from 'components/Text/Text.styled';
 const Cast = () => {
   const { movie_id } = useParams();
   const [cast, setCast] = useState([]);
+  const [error, setError] = useState('');
+
   const defaultImg =
     'https://ronaldmottram.co.nz/wp-content/uploads/2019/01/default-user-icon-8.jpg';
 
@@ -22,15 +24,17 @@ const Cast = () => {
     }
     try {
       const { cast } = await getCastOfMovie(movie_id);
-      console.log(cast);
+      //   console.log(cast);
       setCast(cast);
       //   console.log(cast.profile_path, cast.name, cast.character);
     } catch (error) {
+      setError(error.message);
       console.log(error.message);
     }
   };
   return (
     <div>
+      {error && <Text>Ups... Something went wrong - {error}!</Text>}
       {cast.length > 0 ? (
         cast.map(({ profile_path, name, character }) => {
           return (
