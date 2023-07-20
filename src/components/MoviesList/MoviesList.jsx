@@ -1,18 +1,18 @@
-// import { getTrendingMovies } from 'Services/Api';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // import { useState, useEffect } from 'react';
 import MoviesItem from 'components/MoviesItem/MoviesItem';
 import { List } from './MoviesList.styled';
 
 const MoviesList = ({ movies }) => {
-  // console.log(movies[0].id);
+  const location = useLocation();
+  // console.log(location);
   return (
     <List>
       {movies &&
         movies.map(({ title, id }) => {
           return (
-            <Link to={`/movies/${id}`}>
+            <Link to={`/movies/${id}`} state={{ from: location }}>
               <MoviesItem id={id} title={title} key={id} />
             </Link>
           );

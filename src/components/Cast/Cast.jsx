@@ -24,7 +24,7 @@ const Cast = () => {
     }
     try {
       const { cast } = await getCastOfMovie(movie_id);
-      //   console.log(cast);
+      // console.log(cast);
       setCast(cast);
       //   console.log(cast.profile_path, cast.name, cast.character);
     } catch (error) {
@@ -38,7 +38,7 @@ const Cast = () => {
       {cast.length > 0 ? (
         cast.map(({ profile_path, name, character }) => {
           return (
-            <ul>
+            <ul key={name}>
               <li>
                 <img
                   src={

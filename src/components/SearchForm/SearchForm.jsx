@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Form, InputForm, BtnForm } from './SearchForm.styled';
 
-const SearchForm = ({ onSearchMovie }) => {
+const SearchForm = ({ onSearchMovie, setSearchParams }) => {
   const [query, setQuery] = useState('');
+  // const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChange = ({ target: { value } }) => {
     setQuery(value.toLowerCase().trim());
+    setSearchParams({ query: value });
   };
 
   const handleSubmitForm = e => {
     e.preventDefault();
+
     if (query === '') {
       return alert('Enter a search name');
     }

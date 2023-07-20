@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getMoviesByQuery } from 'Services/Api';
 import MoviesList from 'components/MoviesList/MoviesList';
 import SearchForm from 'components/SearchForm/SearchForm';
 import { Text } from 'components/Text/Text.styled';
 
 const Movies = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() => searchParams.get('query') ?? '');
   const [isEmpty, setIsEmpty] = useState(false);
   const [error, setError] = useState(null);
+
+  // console.log(searchParams.get('query'));
 
   useEffect(() => {
     if (!query) {
@@ -38,7 +42,10 @@ const Movies = () => {
 
   return (
     <>
-      <SearchForm onSearchMovie={handleSearchMovie} />
+      <SearchForm
+        onSearchMovie={handleSearchMovie}
+        setSearchParams={setSearchParams}
+      />
       {error && <Text>Ups... Something went wrong - {error}!</Text>}
       {isEmpty ? (
         <Text>

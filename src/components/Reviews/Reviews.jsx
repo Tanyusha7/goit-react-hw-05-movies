@@ -31,7 +31,7 @@ const Reviews = () => {
       {movie.length > 0 ? (
         movie.map(({ author, content }) => {
           return (
-            <div>
+            <div key={author}>
               <p>
                 Author: <span>{author}</span>
               </p>

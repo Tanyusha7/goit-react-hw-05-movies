@@ -1,14 +1,14 @@
-// import PropTypes from 'prop-types';
-
-// api_key=3fd15b48446eede94fd21b39e1e3acac
-
 import { Route, Routes } from 'react-router-dom';
-import HomePage from '../../pages/HomePage';
-import Movies from '../../pages/Movies';
+import { lazy } from 'react';
 import Layout from 'components/Layout/Layout';
-import MovieDetails from 'components/MovieDetails/MovieDetails';
-import Cast from 'components/Cast/Cast';
-import Reviews from 'components/Reviews/Reviews';
+
+const HomePage = lazy(() => import('../../pages/HomePage'));
+const Movies = lazy(() => import('../../pages/Movies'));
+const NotFound = lazy(() => import('../../pages/NotFound_'));
+
+const MovieDetails = lazy(() => import('components/MovieDetails/MovieDetails'));
+const Cast = lazy(() => import('components/Cast/Cast'));
+const Reviews = lazy(() => import('components/Reviews/Reviews'));
 
 export const App = () => {
   return (
@@ -21,6 +21,7 @@ export const App = () => {
           <Route path="reviews" element={<Reviews />} />
         </Route>
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

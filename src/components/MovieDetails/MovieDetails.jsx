@@ -1,7 +1,7 @@
 import { getMovieById } from 'Services/Api';
-import { useState, useEffect } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
-
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { BsArrowLeft } from 'react-icons/bs';
 import { Text } from 'components/Text/Text.styled';
 
 const MovieDetails = () => {
@@ -13,20 +13,17 @@ const MovieDetails = () => {
   const [genres, setGenres] = useState([]);
   const [score, setScore] = useState(null);
 
-  //   const [movies, setMovies] = useState({});
-
-  //   const [isEmpty, setIsEmpty] = useState(false);
   const [error, setError] = useState(null);
-
-  //   console.log(movie_id);
+  const location = useLocation();
+  const backLocationRef = useRef(location.state?.from ?? '/movies');
 
   const defaultImg =
     'https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png';
 
   useEffect(() => {
-    if (!movie_id) {
-      return;
-    }
+    // if (!movie_id) {
+    //   return;
+    // }
 
     getMovieId(movie_id);
   }, [movie_id]);
@@ -45,32 +42,28 @@ const MovieDetails = () => {
         vote_average,
       } = await getMovieById(movie_id);
 
-      //   setMovies(data);
-
       setImage(poster_path);
       setTitle(title);
       setOverview(overview);
       setYear(release_date.slice(0, 4));
       setGenres(genres);
       setScore(Math.round(vote_average * 10));
-
-      //   console.log(title, overview, genres, release_date);
     } catch (error) {
       setError(error.code);
     }
   };
 
-  //   const year = release_date.slice(0, 4);
-
-  //   const score = Math.round(vote_average * 10);
-
   const genreName = genres.flatMap(genre => genre.name);
-
-  //   console.log(genreName);
 
   return (
     <>
       {error && <Text>Ups... Something went wrong - {error}!</Text>}
+      <Link to={backLocationRef.current}>
+        <button type="button">
+          <BsArrowLeft />
+          Go Back
+        </button>
+      </Link>
       <div>
         <img
           src={image ? `https://image.tmdb.org/t/p/w500/${image}` : defaultImg}
@@ -95,16 +88,18 @@ const MovieDetails = () => {
             return <p>{name}</p>;
           })}
       </div>
-      <ul>
+      <div>
         <p>Additional information</p>
         <Link to={`credits`}>
-          <li>Cast</li>
+          <div>Cast</div>
         </Link>
         <Link to={`reviews`}>
-          <li>Reviews</li>
+          <div>Reviews</div>
         </Link>
-      </ul>
-      <Outlet />
+      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };
