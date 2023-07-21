@@ -24,13 +24,6 @@ const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // const [image, setImage] = useState('');
-  // const [title, setTitle] = useState('');
-  // const [overview, setOverview] = useState('');
-  // const [year, setYear] = useState('');
-  // const [genres, setGenres] = useState([]);
-  // const [score, setScore] = useState(null);
-
   const [error, setError] = useState(null);
   const location = useLocation();
   const backLocationRef = useRef(location.state?.from ?? '/movies');
@@ -56,7 +49,7 @@ const MovieDetails = () => {
       setError(error.code);
     }
   };
-  // console.log(movieDetails.release_date.slice(0, 4));
+
   return (
     <>
       <MovieSection>
