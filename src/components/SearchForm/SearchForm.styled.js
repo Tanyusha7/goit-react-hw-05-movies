@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Form = styled.form`
-  margin-top: 30px;
+  margin-bottom: 30px;
   padding-left: 20px;
   font-size: 16px;
   line-height: 1;

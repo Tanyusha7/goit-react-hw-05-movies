@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Form, InputForm, BtnForm } from './SearchForm.styled';
 
 const SearchForm = ({ onSearchMovie, setSearchParams }) => {
   const [query, setQuery] = useState('');
-  // const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChange = ({ target: { value } }) => {
     setQuery(value.toLowerCase().trim());
@@ -34,3 +34,8 @@ const SearchForm = ({ onSearchMovie, setSearchParams }) => {
 };
 
 export default SearchForm;
+
+SearchForm.propTypes = {
+  onSearchMovie: PropTypes.func.isRequired,
+  setSearchParams: PropTypes.func.isRequired,
+};

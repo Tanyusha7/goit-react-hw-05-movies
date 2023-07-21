@@ -4,6 +4,8 @@ import { getMoviesByQuery } from 'Services/Api';
 import MoviesList from 'components/MoviesList/MoviesList';
 import SearchForm from 'components/SearchForm/SearchForm';
 import { Text } from 'components/Text/Text.styled';
+import { SectionMain } from 'components/SectionMain/SectionMain.styled';
+import { Container } from 'components/Container/Container.styled';
 
 const Movies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,8 +13,6 @@ const Movies = () => {
   const [query, setQuery] = useState(() => searchParams.get('query') ?? '');
   const [isEmpty, setIsEmpty] = useState(false);
   const [error, setError] = useState(null);
-
-  // console.log(searchParams.get('query'));
 
   useEffect(() => {
     if (!query) {
@@ -41,20 +41,22 @@ const Movies = () => {
   };
 
   return (
-    <>
-      <SearchForm
-        onSearchMovie={handleSearchMovie}
-        setSearchParams={setSearchParams}
-      />
-      {error && <Text>Ups... Something went wrong - {error}!</Text>}
-      {isEmpty ? (
-        <Text>
-          Sorry. We didn`t find nothing by your search query, try again!
-        </Text>
-      ) : (
-        <MoviesList movies={movies} />
-      )}
-    </>
+    <SectionMain>
+      <Container>
+        <SearchForm
+          onSearchMovie={handleSearchMovie}
+          setSearchParams={setSearchParams}
+        />
+        {error && <Text>Ups... Something went wrong - {error}!</Text>}
+        {isEmpty ? (
+          <Text>
+            Sorry. We didn`t find nothing by your search query, try again!
+          </Text>
+        ) : (
+          <MoviesList movies={movies} />
+        )}
+      </Container>
+    </SectionMain>
   );
 };
 

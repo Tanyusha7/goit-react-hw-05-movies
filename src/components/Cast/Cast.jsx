@@ -2,6 +2,8 @@ import { getCastOfMovie } from 'Services/Api';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Text } from 'components/Text/Text.styled';
+import { CastItem, CastList } from './Cast.styled';
+import { Container } from '../Container/Container.styled';
 
 const Cast = () => {
   const { movie_id } = useParams();
@@ -24,22 +26,21 @@ const Cast = () => {
     }
     try {
       const { cast } = await getCastOfMovie(movie_id);
-      // console.log(cast);
+
       setCast(cast);
-      //   console.log(cast.profile_path, cast.name, cast.character);
     } catch (error) {
       setError(error.message);
       console.log(error.message);
     }
   };
   return (
-    <div>
-      {error && <Text>Ups... Something went wrong - {error}!</Text>}
-      {cast.length > 0 ? (
-        cast.map(({ profile_path, name, character }) => {
-          return (
-            <ul key={name}>
-              <li>
+    <Container>
+      <CastList>
+        {error && <Text>Ups... Something went wrong - {error}!</Text>}
+        {cast.length > 0 ? (
+          cast.map(({ profile_path, name, character }) => {
+            return (
+              <CastItem key={name}>
                 <img
                   src={
                     profile_path
@@ -50,18 +51,18 @@ const Cast = () => {
                   width="100"
                   height="150"
                 />
-                <p>{name}</p>
+                <b>{name}</b>
                 <p>
                   Character: <span> {character}</span>
                 </p>
-              </li>
-            </ul>
-          );
-        })
-      ) : (
-        <Text>We don`t have information about a cast!</Text>
-      )}
-    </div>
+              </CastItem>
+            );
+          })
+        ) : (
+          <Text>We don`t have information about a cast!</Text>
+        )}
+      </CastList>
+    </Container>
   );
 };
 

@@ -1,8 +1,21 @@
 import { getMovieById } from 'Services/Api';
 import { useState, useEffect, useRef, Suspense } from 'react';
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { Text } from 'components/Text/Text.styled';
+import { LinkInfo } from 'components/Link/Link.styled';
+import {
+  MovieSection,
+  BtnBack,
+  Genreslist,
+  MovieDesc,
+  MovieCont,
+  AddInfoSection,
+  AddInfoItem,
+  AddInfoList,
+  AddInfoText,
+} from './MovieDetails.styled';
+import { Container } from 'components/Container/Container.styled';
 
 const MovieDetails = () => {
   const { movie_id } = useParams();
@@ -21,10 +34,6 @@ const MovieDetails = () => {
     'https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png';
 
   useEffect(() => {
-    // if (!movie_id) {
-    //   return;
-    // }
-
     getMovieId(movie_id);
   }, [movie_id]);
 
@@ -57,46 +66,64 @@ const MovieDetails = () => {
 
   return (
     <>
-      {error && <Text>Ups... Something went wrong - {error}!</Text>}
-      <Link to={backLocationRef.current}>
-        <button type="button">
-          <BsArrowLeft />
-          Go Back
-        </button>
-      </Link>
-      <div>
-        <img
-          src={image ? `https://image.tmdb.org/t/p/w500/${image}` : defaultImg}
-          alt={title}
-          width="300"
-          height="400"
-        />
-      </div>
-      <div>
-        <h2>
-          {title}
-          <span> ({year})</span>
-        </h2>
-        <p>
-          User score: <span>{score}%</span>
-        </p>
-        <p>Overview</p>
-        <p>{overview}</p>
-        <p>Genres</p>
-        {genres &&
-          genreName.map(name => {
-            return <p>{name}</p>;
-          })}
-      </div>
-      <div>
-        <p>Additional information</p>
-        <Link to={`credits`}>
-          <div>Cast</div>
-        </Link>
-        <Link to={`reviews`}>
-          <div>Reviews</div>
-        </Link>
-      </div>
+      <MovieSection>
+        <Container>
+          {error && <Text>Ups... Something went wrong - {error}!</Text>}
+          <BtnBack type="button">
+            <LinkInfo to={backLocationRef.current}>
+              <BsArrowLeft />
+              Go back
+            </LinkInfo>
+          </BtnBack>
+          <MovieDesc>
+            <div>
+              <img
+                src={
+                  image
+                    ? `https://image.tmdb.org/t/p/w500/${image}`
+                    : defaultImg
+                }
+                alt={title}
+                width="300"
+                height="400"
+              />
+            </div>
+            <MovieCont>
+              <h2>
+                {title}
+                <span> ({year})</span>
+              </h2>
+              <p>
+                User score: <span>{score}%</span>
+              </p>
+              <b>Overview</b>
+              <p>{overview}</p>
+              <b>Genres</b>
+              <Genreslist>
+                {genres &&
+                  genreName.map(name => {
+                    return <p>{name}</p>;
+                  })}
+              </Genreslist>
+            </MovieCont>
+          </MovieDesc>
+        </Container>
+      </MovieSection>
+
+      <AddInfoSection>
+        <Container>
+          <AddInfoList>
+            <AddInfoText>Additional information</AddInfoText>
+            <AddInfoItem>
+              <LinkInfo to={`credits`}>Cast</LinkInfo>
+            </AddInfoItem>
+            <AddInfoItem>
+              <LinkInfo to={`reviews`}>Reviews</LinkInfo>
+            </AddInfoItem>
+          </AddInfoList>
+        </Container>
+      </AddInfoSection>
+
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>

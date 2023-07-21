@@ -2,6 +2,8 @@ import { getReviewsOfMovie } from 'Services/Api';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Text } from 'components/Text/Text.styled';
+import { ReviewsSection, ReviewsList, ReviewsItem } from './Reviews.styled';
+import { Container } from 'components/Container/Container.styled';
 
 const Reviews = () => {
   const { movie_id } = useParams();
@@ -26,23 +28,27 @@ const Reviews = () => {
   }, [movie_id]);
 
   return (
-    <>
-      {error && <Text>Ups... Something went wrong - {error}!</Text>}
-      {movie.length > 0 ? (
-        movie.map(({ author, content }) => {
-          return (
-            <div key={author}>
-              <p>
-                Author: <span>{author}</span>
-              </p>
-              <p>{content}</p>
-            </div>
-          );
-        })
-      ) : (
-        <Text>We don`t have any reviews for this movie!</Text>
-      )}
-    </>
+    <ReviewsSection>
+      <Container>
+        <ReviewsList>
+          {error && <Text>Ups... Something went wrong - {error}!</Text>}
+          {movie.length > 0 ? (
+            movie.map(({ author, content }) => {
+              return (
+                <ReviewsItem key={author}>
+                  <b>
+                    Author: <span>{author}</span>
+                  </b>
+                  <p>{content}</p>
+                </ReviewsItem>
+              );
+            })
+          ) : (
+            <Text>We don`t have any reviews for this movie!</Text>
+          )}
+        </ReviewsList>
+      </Container>
+    </ReviewsSection>
   );
 };
 
