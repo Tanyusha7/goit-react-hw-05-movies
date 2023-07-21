@@ -38,9 +38,9 @@ const Cast = () => {
       <CastList>
         {error && <Text>Ups... Something went wrong - {error}!</Text>}
         {cast.length > 0 ? (
-          cast.map(({ profile_path, name, character }) => {
+          cast.map(({ profile_path, name, character }, index) => {
             return (
-              <CastItem key={name}>
+              <CastItem key={index}>
                 <img
                   src={
                     profile_path

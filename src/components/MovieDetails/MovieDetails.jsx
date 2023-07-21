@@ -101,8 +101,8 @@ const MovieDetails = () => {
               <b>Genres</b>
               <Genreslist>
                 {genres &&
-                  genreName.map(name => {
-                    return <p>{name}</p>;
+                  genreName.map((name, index) => {
+                    return <p key={index}>{name}</p>;
                   })}
               </Genreslist>
             </MovieCont>
