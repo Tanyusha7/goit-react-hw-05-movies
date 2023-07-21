@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { ThreeDots } from 'react-loader-spinner';
+
 import { getMoviesByQuery } from 'Services/Api';
 import MoviesList from 'components/MoviesList/MoviesList';
 import SearchForm from 'components/SearchForm/SearchForm';
@@ -13,12 +15,14 @@ const Movies = () => {
   const [query, setQuery] = useState(() => searchParams.get('query') ?? '');
   const [isEmpty, setIsEmpty] = useState(false);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!query) {
       return;
     }
     const getMoviesBySearchQuery = async query => {
+      setIsLoading(true);
       try {
         const { results } = await getMoviesByQuery(query);
 
@@ -27,7 +31,9 @@ const Movies = () => {
         } else {
           setIsEmpty(false);
         }
+
         setMovies(results);
+        setIsLoading(false);
         setError(null);
       } catch (error) {
         setError(error.message || error.code);
@@ -47,6 +53,18 @@ const Movies = () => {
           onSearchMovie={handleSearchMovie}
           setSearchParams={setSearchParams}
         />
+        {isLoading && (
+          <ThreeDots
+            height="10"
+            width="300"
+            radius="9"
+            color="#370f9b"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        )}
         {error && <Text>Ups... Something went wrong - {error}!</Text>}
         {isEmpty ? (
           <Text>

@@ -2,6 +2,7 @@ import { getMovieById } from 'Services/Api';
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
+import { ThreeDots } from 'react-loader-spinner';
 import { Text } from 'components/Text/Text.styled';
 import { LinkInfo } from 'components/Link/Link.styled';
 import {
@@ -14,17 +15,21 @@ import {
   AddInfoItem,
   AddInfoList,
   AddInfoText,
-} from './MovieDetails.styled';
+} from '../components/MovieDetails/MovieDetails.styled';
 import { Container } from 'components/Container/Container.styled';
 
 const MovieDetails = () => {
   const { movie_id } = useParams();
-  const [image, setImage] = useState('');
-  const [title, setTitle] = useState('');
-  const [overview, setOverview] = useState('');
-  const [year, setYear] = useState('');
-  const [genres, setGenres] = useState([]);
-  const [score, setScore] = useState(null);
+
+  const [movieDetails, setMovieDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  // const [image, setImage] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [overview, setOverview] = useState('');
+  // const [year, setYear] = useState('');
+  // const [genres, setGenres] = useState([]);
+  // const [score, setScore] = useState(null);
 
   const [error, setError] = useState(null);
   const location = useLocation();
@@ -41,33 +46,33 @@ const MovieDetails = () => {
     if (!movie_id) {
       return;
     }
+    setIsLoading(true);
     try {
-      const {
-        poster_path,
-        title,
-        overview,
-        genres,
-        release_date,
-        vote_average,
-      } = await getMovieById(movie_id);
+      const movie = await getMovieById(movie_id);
 
-      setImage(poster_path);
-      setTitle(title);
-      setOverview(overview);
-      setYear(release_date.slice(0, 4));
-      setGenres(genres);
-      setScore(Math.round(vote_average * 10));
+      setMovieDetails(movie);
+      setIsLoading(false);
     } catch (error) {
       setError(error.code);
     }
   };
-
-  const genreName = genres.flatMap(genre => genre.name);
-
+  // console.log(movieDetails.release_date.slice(0, 4));
   return (
     <>
       <MovieSection>
         <Container>
+          {isLoading && (
+            <ThreeDots
+              height="10"
+              width="300"
+              radius="9"
+              color="#370f9b"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          )}
           {error && <Text>Ups... Something went wrong - {error}!</Text>}
           <BtnBack type="button">
             <LinkInfo to={backLocationRef.current}>
@@ -79,30 +84,36 @@ const MovieDetails = () => {
             <div>
               <img
                 src={
-                  image
-                    ? `https://image.tmdb.org/t/p/w500/${image}`
+                  movieDetails.poster_path
+                    ? `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`
                     : defaultImg
                 }
-                alt={title}
+                alt={movieDetails.title}
                 width="300"
                 height="400"
               />
             </div>
             <MovieCont>
               <h2>
-                {title}
-                <span> ({year})</span>
+                {movieDetails.title}
+                <span>
+                  (
+                  {movieDetails.release_date &&
+                    movieDetails.release_date.slice(0, 4)}
+                  )
+                </span>
               </h2>
               <p>
-                User score: <span>{score}%</span>
+                User score:
+                <span> {Math.round(movieDetails.vote_average * 10)}%</span>
               </p>
               <b>Overview</b>
-              <p>{overview}</p>
+              <p>{movieDetails.overview}</p>
               <b>Genres</b>
               <Genreslist>
-                {genres &&
-                  genreName.map((name, index) => {
-                    return <p key={index}>{name}</p>;
+                {movieDetails.genres &&
+                  movieDetails.genres.map((genre, index) => {
+                    return <p key={index}>{genre.name}</p>;
                   })}
               </Genreslist>
             </MovieCont>
@@ -124,7 +135,7 @@ const MovieDetails = () => {
         </Container>
       </AddInfoSection>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <Outlet />
       </Suspense>
     </>
