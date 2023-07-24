@@ -1,10 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { lazy } from 'react';
 import Layout from 'components/Layout/Layout';
 
 const HomePage = lazy(() => import('../../pages/HomePage'));
 const Movies = lazy(() => import('../../pages/Movies'));
-const NotFound = lazy(() => import('../../pages/NotFound_'));
 
 const MovieDetails = lazy(() => import('pages/MovieDetails'));
 const Cast = lazy(() => import('components/Cast/Cast'));
@@ -21,7 +20,7 @@ export const App = () => {
           <Route path="credits" element={<Cast />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Navigate to={'/movies'} replace />} />
       </Route>
     </Routes>
   );

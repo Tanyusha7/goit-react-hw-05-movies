@@ -15,7 +15,7 @@ export const Nav = styled.nav`
 
 export const NavHeader = styled(NavLink)`
   color: darkblue;
-  &:hover {
+  &.active {
     color: blue;
   }
 `;
